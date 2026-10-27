@@ -24,4 +24,23 @@ public class User {
     public void setAge(int age) {
         this.age = age;
     }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual;
+        if (this == object) {
+            isEqual = true;
+        } else if (object == null || object.getClass() != getClass()) {
+            isEqual = false;
+        } else {
+            User user = (User) object;
+            isEqual = age == user.age && Objects.equals(name, user.name);
+        }
+        return isEqual;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, age);
+    }
 }
