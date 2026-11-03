@@ -1,23 +1,19 @@
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class User {
     private final UUID id;
     private String name;
     private int age;
 
-    public User(String name, int age, UUID id) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Name is empty");
-        }
+    public User(String name, int age) {
+        validateName(name);
+        validateAge(age);
         this.name = name;
-
-        if (age < 0) {
-            throw new IllegalArgumentException("age cannot be less than 0");
-        }
         this.age = age;
-
-        this.id = id;
+        this.id = UUID.randomUUID();
     }
 
     public UUID getId() {
@@ -49,5 +45,19 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(name, age);
+    }
+
+    private void validateName(String name) {
+        final Pattern pattern = Pattern.compile("[a-zA-Z]+");
+        final Matcher matcher = pattern.matcher(name);
+        if (name == null || name.isBlank() || !matcher.matches()) {
+            throw new IllegalArgumentException("Name is not appropriate");
+        }
+    }
+
+    private void validateAge(int age) {
+        if (age < 0) {
+            throw new IllegalArgumentException("age cannot be less than 0");
+        }
     }
 }
